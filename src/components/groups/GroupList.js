@@ -16,12 +16,13 @@ const GroupList = () => {
 				column: "group_name",
 				row: ""
 			});
+			console.log("DATA", groups.data);
 			setData({ groups: groups.data.groupByFilter });
 		};
 
 		fetchData();
 	}, [token]);
-	console.log(data);
+
 	if (!data.groups) {
 		return <div>Loading Groups...</div>;
 	}
@@ -41,7 +42,7 @@ const GroupListContainer = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	width: 100%;
-	margin-top: 5vh;
+	margin-top: 1vh;
 `;
 
 export default GroupList;
