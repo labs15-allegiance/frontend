@@ -1,43 +1,46 @@
 import React, { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
+
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import styled from "styled-components";
 
 import GroupCard from "./GroupCard";
 
-const GroupList = () => {
+const NearbyGroups = () => {
 	const [data, setData] = useState({ groups: [] });
 
+	// Fetches Auth0 token for axios call
 	const [token] = useGetToken();
+
+	// Fetches user information from Redux
+	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (token) {
-				const groups = await axiosWithAuth([token]).post(`/groups/search`, {
-					column: "group_name",
-					row: ""
-				});
-				console.log("DATA", groups.data);
-				setData({ groups: groups.data.groupByFilter });
-			}
+			const groups = await axiosWithAuth([token]).post(`/groups/search`, {
+				column: "location",
+				row: loggedInUser.location
+			});
+			console.log("DATA", groups.data);
+			setData({ groups: groups.data.groupByFilter });
 		};
 
 		fetchData();
-	}, [token]);
+	}, [token, loggedInUser]);
 
 	if (!data.groups) {
 		return <div>Loading Groups...</div>;
 	}
-	//Component should only show top 20 , load more button below. Should be sortable by recent activity/group size/allegiances
-
 	return (
 		<SectionContainer>
-			<h3>Discover</h3>
-			<GroupListContainer>
+			<h3>Groups Near You</h3>
+			<NearbyGroupsContainer>
 				{data.groups.map(group => {
 					return <GroupCard group={group} key={group.id} />;
 				})}
-			</GroupListContainer>
+			</NearbyGroupsContainer>
 		</SectionContainer>
 	);
 };
@@ -47,7 +50,7 @@ const SectionContainer = styled.div`
 	flex-direction: column;
 `;
 
-const GroupListContainer = styled.div`
+const NearbyGroupsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -56,4 +59,4 @@ const GroupListContainer = styled.div`
 	margin-top: 1vh;
 `;
 
-export default GroupList;
+export default NearbyGroups;

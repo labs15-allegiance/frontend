@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   padding-top: 15%;
+  padding-bottom: 15%;
 }
 
 .App-logo {
@@ -86,4 +87,8 @@
   border-radius: 20px;
   font-size: 1.25rem;
   margin: 3%;
+}
+
+.boldInput {
+  font-weight: bold;
 }

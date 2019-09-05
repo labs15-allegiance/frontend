@@ -1,21 +1,51 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Image, Icon, Modal, Popup } from "semantic-ui-react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Image, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MyAllegianceGroups from "./MyAllegianceGroups";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import useGetToken from "../utils/useGetToken";
+import { GET_GROUPS } from "../../reducers/userReducer";
 
 const Profile = props => {
 	const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 	const loggedInGroups = useSelector(state => state.userReducer.loggedInGroups);
-	const loggedInAllegiances = useSelector(
+	/*const loggedInAllegiances = useSelector(
 		state => state.userReducer.loggedInAllegiances
-	);
+	);*/
 	const loggedInPosts = useSelector(state => state.userReducer.loggedInPosts);
+	const dispatch = useDispatch();
+
+	//Fetches Auth0 token for axios call
+	const [token] = useGetToken();
+
+	useEffect(() => {
+		if (loggedInUser) {
+			const fetchData = async () => {
+				if (token) {
+					const groups = await axiosWithAuth([token]).get(
+						`/groups_users/search/${loggedInUser.id}`
+					);
+					const userGroups = groups.data.groups.map(group => {
+						return {
+							name: group.group_name,
+							image: group.group_image,
+							id: group.group_id,
+							user_type: group.user_type
+						}
+					})
+					dispatch({ type: GET_GROUPS, payload: userGroups })
+				}
+			};
+
+			fetchData();
+		}
+	}, [token, loggedInUser, dispatch]);
 
 	return (
 		<ProfileContainer>
-			<div>
+			<div style={{ maxWidth: "100%" }}>
 				<Banner>
 					<BannerImage src={loggedInUser.banner_image} fluid />
 				</Banner>
@@ -32,62 +62,10 @@ const Profile = props => {
 						) : null}
 					</Name>
 					<p>{loggedInUser.bio}</p>
-					<div>
-						<H3>MY ALLEGIANCES</H3>
-						<AllegianceHolder>
-							<MyAllegianceGroups content={loggedInAllegiances} />
-						</AllegianceHolder>
-					</div>
 					<>
-						<GroupTitleHolder>
-							<H3>MY GROUPS</H3>
-							<Link to="/creategroup">
-								<Popup
-									content="Create a Group"
-									trigger={<Icon name="plus square" size="small" />}
-								/>
-							</Link>
-						</GroupTitleHolder>
-						<div>
-							<MyAllegianceGroups content={loggedInGroups} />
-						</div>
+						<H3>MY GROUPS</H3>
+						<MyAllegianceGroups content={loggedInGroups} type={"groups"} />
 					</>
-					<ImageHolder>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-						<Modal
-							closeIcon
-							trigger={
-								<UserImage
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-									rounded
-									size="tiny"
-								/>
-							}
-						>
-							<Modal.Content image>
-								<Image
-									wrapped
-									src="https://react.semantic-ui.com/images/wireframe/image.png"
-								/>
-							</Modal.Content>
-						</Modal>
-					</ImageHolder>
 				</InfoHolder>
 				<div>
 					<PostHeader>
@@ -114,6 +92,7 @@ const ProfileContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	margin-top: -4.5%;
+	margin-bottom: 15%;
 `;
 
 const Banner = styled.div`
@@ -154,21 +133,7 @@ const ProfileImage = styled.img`
 	margin-left: -25%; //centers the image
 	height: 100%;
 	width: auto;
-	max-width: none !important;
-`;
-
-const AllegianceHolder = styled.div`
-	margin: auto;
-`;
-
-const GroupTitleHolder = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	h3 {
-		margin: 0 1%;
-	}
+	max-width: none;
 `;
 
 const H3 = styled.h3`
@@ -178,24 +143,14 @@ const H3 = styled.h3`
 	margin-bottom: 0;
 `;
 
-const ImageHolder = styled.div`
+const PostHeader = styled.div`
 	display: flex;
 	flex-direction: row;
-	margin-left: 3%;
-`;
-
-const UserImage = styled(Image)`
-	margin-left: 1%;
-`;
-
-const PostHeader = styled.div`
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between
-				align-items: center;
-				margin-left: 5%;
-				margin-right: 5%;
-				margin-top: .5rem;`;
+	justify-content: space-between
+	align-items: center;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: .5rem;`;
 
 const NoPosts = styled.p`
 	color: lightgrey;
@@ -204,3 +159,48 @@ const NoPosts = styled.p`
 `;
 
 export default Profile;
+
+//Code for future release
+/*					<ImageHolder>
+						<Modal
+							closeIcon
+							trigger={
+								<UserImage
+									src="https://react.semantic-ui.com/images/wireframe/image.png"
+									rounded
+									size="tiny"
+								/>
+							}
+						>
+							<Modal.Content image>
+								<Image
+									wrapped
+									src="https://react.semantic-ui.com/images/wireframe/image.png"
+								/>
+							</Modal.Content>
+						</Modal>
+						<Modal
+							closeIcon
+							trigger={
+								<UserImage
+									src="https://react.semantic-ui.com/images/wireframe/image.png"
+									rounded
+									size="tiny"
+								/>
+							}
+						>
+							<Modal.Content image>
+								<Image
+									wrapped
+									src="https://react.semantic-ui.com/images/wireframe/image.png"
+								/>
+							</Modal.Content>
+						</Modal>
+					</ImageHolder>
+
+						<div>
+							<H3>MY ALLEGIANCES</H3>
+							<AllegianceHolder>
+								<MyAllegianceGroups content={loggedInAllegiances} type={'allegiances'} />
+							</AllegianceHolder>
+						</div>*/
