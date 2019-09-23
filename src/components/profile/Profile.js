@@ -8,6 +8,7 @@ import axios from "axios"
 import useGetToken from "../utils/useGetToken";
 import { ENTER_PROFILE } from "../../reducers/userReducer";
 import defaultBanner from "../../assets/defaultBanner.jpg";
+import { device } from '../../styled/device';
 
 const Profile = props => {
   const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -104,14 +105,32 @@ const ProfileContainer = styled.div`
   justify-content: center;
   margin-top: -4.5%;
   margin-bottom: 10%;
+  @media ${device.laptop} {
+    margin-top: -4%;
+    width: 100%;
+     
+  }
 `;
 
-const Banner = styled.div``;
+const Banner = styled.div`
+display: flex;
+justify-content: center;
+width: 100%;
+@media ${device.laptop} {
+  
+}
+`;
 
 const BannerImage = styled.img`
-width: 100%
+width: 100%;
 border-bottom: 10px solid black;
-max-height: 225px;
+max-height: 400px;
+@media ${device.laptop} {
+  margin-top:2%;
+  padding-top: 7%;
+  max-height: 500px;
+ 
+}
 `;
 
 const InfoHolder = styled.div`
@@ -137,9 +156,12 @@ const ImageCrop = styled.div`
   margin-left: auto;
   margin-right: auto;
   background-color: white;
+  @media ${device.laptop} {
+margin-bottom: -3rem;
+  }
 `;
 const ProfileImage = styled.img`
-  display: inline;
+  display: inline-block;
   margin-left: -25%; //centers the image
   height: 100%;
   width: auto;
@@ -156,7 +178,7 @@ const H3 = styled.h3`
 const PostHeader = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between
+	justify-content: space-between;
 	align-items: center;
 	margin-left: 5%;
 	margin-right: 5%;

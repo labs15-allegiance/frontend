@@ -1,7 +1,50 @@
+// * {
+//   border: 1px solid #f00 !important;
+// }
+
 .App {
+  width: 100%;
   text-align: center;
   padding-top: 11%;
   padding-bottom: 12%;
   // height: 100vh;
   // min-height: 100vh;
+ @media (min-width: 1024px) {
+   padding-top: 4%;
+   padding-bottom: 3%;
+ }
 }
+h1 {
+  @media (min-width: 1024px) {
+		font-size: 3.5rem
+  }
+  
+}
+
+.MuiPaper-elevation3 {
+  @media (min-width: 1024px) {
+    width: 75%;
+   margin: 0 auto;
+  }
+  
+}
+form.reply-form {
+  @media (min-width: 1024px) {
+    background-color: white;
+  }
+}
+.input-div {
+  @media (min-width: 1024px) {
+  padding-right: 1%;
+  }
+}
+.addAllegiance {
+  @media (min-width: 1024px) {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 5%;
+  }
+ 
+}
+
+

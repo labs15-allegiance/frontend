@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { Menu, Icon } from "semantic-ui-react";
 import IconButton from "@material-ui/core/IconButton";
 import { ArrowBack } from "@material-ui/icons";
+import { device } from '../../styled/device';
 
 const NavBar = () => {
 	const { isAuthenticated, logout } = useAuth0();
@@ -35,7 +36,7 @@ const NavBar = () => {
 		</>)
 
 	return (
-		<>
+		<Navigation>
 			<TopNav>
 				{pathname === "/home" && <p>Home</p>}
 				{pathname === "/groups" && <p>Groups</p>}
@@ -48,6 +49,8 @@ const NavBar = () => {
 				{pathname.includes("/post") && TopNavItem("back to group", `/group/${groupId}`, "Post")}
 				{pathname === "/makeallegiance" && <p>Edit Allegiances</p>}
 			</TopNav>
+			
+			
 			<BottomNav>
 				{/* If user is authenticated, show links to navigate app */}
 				{isAuthenticated && (
@@ -102,10 +105,14 @@ const NavBar = () => {
 					</Nav>
 				)}
 			</BottomNav>
-		</>
+			</Navigation>
 	);
 };
 
+const Navigation = styled.div`
+display: flex;
+justify-content: center;
+`;
 const TopNav = styled.div`
 	display: flex;
 	justify-content: center;
@@ -120,7 +127,6 @@ const TopNav = styled.div`
 	z-index: 2;
 	-webkit-transition: height 0.2s ease-in-out;
 	transition: height 0.2s ease-in-out;
-	border-radius: 0;
 	p {
 		width: 70%;
 		margin: 0;
@@ -128,6 +134,9 @@ const TopNav = styled.div`
 	@media (max-width: 320px) {
 		max-width: 320px
 	}
+	@media ${device.laptop} {
+		width: 85%;
+	} 
 `;
 
 const IconBut = styled(IconButton)`
@@ -149,6 +158,10 @@ const BottomNav = styled.div`
 	max-height: 8%;
 	@media (max-width: 320px) {
 		max-width: 320px
+	}
+	@media (min-width: 1024px) {
+		width: 85%;
+		
 	}
 `;
 

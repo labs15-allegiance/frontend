@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useAuth0 } from "./auth/react-auth0-wrapper";
 import Logo from "../assets/Logo.png";
 import LandingImage from "../assets/LandingImage.jpg";
+import { device } from '../styled/device';
 
 const Landing = () => {
 
@@ -38,6 +39,9 @@ const LandingContainer = styled.div`
 	margin-top: -11%;
 	margin-bottom: -12%;
 	align-items: center;
+	@media ${device.laptop} {
+		height: 113.9vh;
+	}
 `;
 
 const LogoHolder = styled.div`
@@ -49,12 +53,18 @@ const LogoHolder = styled.div`
 const Headers = styled.h1`
 	width: 75%;
 	font-size: 3rem;
+	@media ${device.laptop} {
+		font-size: 3.5rem;
+	}
 `;
 
 const ButtonHolder = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 50%;
+	@media ${device.laptop} {
+		width: 35%;
+	}
 `;
 
 export default Landing;

@@ -3,6 +3,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import useGetToken from "../utils/useGetToken";
 import { useDispatch, useSelector } from "react-redux";
 import { VIEW_GROUP } from "../../reducers/navReducer";
+import { device } from "../../styled/device";
 
 import GroupInfo from "./GroupInfo";
 import PostsContainer from "../posts/PostsContainer";
@@ -90,11 +91,15 @@ const GroupPage = props => {
 const GroupPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 100%;
   background-color: #dee4e7;
   min-height: 87vh;
   justify-content: flex-start;
+  @media ${device.laptop} {
+    background-color: white;
+    margin-top: .5%;
+
+  }
 `;
 
 const PaperContainer = styled(Paper)`
