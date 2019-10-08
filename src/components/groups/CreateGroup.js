@@ -80,10 +80,7 @@ const CreateGroup = props => {
 	async function editGroup() {
 		try {
 			const updatedGroup = { ...values, image };
-			const result = await axiosWithAuth([token]).put(
-				`/groups/${group.id}`,
-				updatedGroup
-			);
+			await axiosWithAuth([token]).put(`/groups/${group.id}`, updatedGroup);
 			Mixpanel.activity(loggedInUser.id, "Complete Edit Group");
 			const push = () => props.history.push(`/group/${group.id}`);
 			setTimeout(push, 1000);
@@ -95,7 +92,7 @@ const CreateGroup = props => {
 	//Deletes a group.
 	async function deleteGroup() {
 		try {
-			const result = await axiosWithAuth([token]).delete(`/groups/${group.id}`);
+			await axiosWithAuth([token]).delete(`/groups/${group.id}`);
 			Mixpanel.activity(loggedInUser.id, "Complete Delete Group");
 			const push = () => props.history.push(`/profile`);
 			setTimeout(push, 1000);
