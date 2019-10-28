@@ -115,7 +115,7 @@ function App(props) {
 				<NavBar />
 			</Switch>
 			<Switch>
-				<Route exact path="/home" component={Feed} />
+				<PrivateRoute exact path="/home" component={Feed} />
 				<PrivateRoute exact path="/makeprofile" component={MakeProfile} />
 				<PrivateRoute exact path="/creategroup" component={CreateGroup} />
 				<PrivateRoute exact path="/editgroup/:id" component={CreateGroup} />
